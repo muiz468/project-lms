@@ -5,7 +5,6 @@ const resourcesRouter = require('./routes/resources');
 const app = express();
 app.use(express.json());
 
-// These come from the Kubernetes ConfigMap later — env vars for now
 const SITE_NAME = process.env.SITE_NAME || 'Deejoft LMS';
 const MAX_UPLOAD_SIZE_MB = process.env.MAX_UPLOAD_SIZE_MB || '10';
 
@@ -20,6 +19,13 @@ app.use(healthRouter);
 app.use(resourcesRouter);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`${SITE_NAME} listening on port ${PORT}`);
-});
+
+// Only auto-start the server when this file is run directly (e.g. `node src/app.js`).
+// When a test file imports this instead, it takes control of starting/stopping it.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`${SITE_NAME} listening on port ${PORT}`);
+  });
+}
+
+module.exports = app;
