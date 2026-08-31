@@ -1,0 +1,14 @@
+services:
+  lms:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - SITE_NAME=Deejoft LMS (local)
+      - MAX_UPLOAD_SIZE_MB=10
+      - DB_PATH=/app/data/lms.db
+    volumes:
+      - lms-data:/app/data
+
+volumes:
+  lms-data:

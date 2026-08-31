@@ -1,0 +1,8 @@
+node_modules
+data/*.db
+.git
+.github
+k8s
+terraform
+ansible
+README.md
