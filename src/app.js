@@ -11,7 +11,8 @@ const MAX_UPLOAD_SIZE_MB = process.env.MAX_UPLOAD_SIZE_MB || '10';
 app.get('/', (req, res) => {
   res.json({
     message: `Welcome to ${SITE_NAME}`,
-    maxUploadSizeMb: MAX_UPLOAD_SIZE_MB
+    maxUploadSizeMb: MAX_UPLOAD_SIZE_MB,
+    version: '1.1.0'
   });
 });
 
