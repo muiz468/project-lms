@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: lms
-          image: ghcr.io/muiz468/project-lms:6a7326c485abf5ab217783349c298b65661e9e67 
+          image: ghcr.io/muiz468/project-lms:c9f5d46bae11ef96e55382135d257452cdac1736
           ports:
             - containerPort: 3000
           env:
