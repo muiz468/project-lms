@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lms-deployment
+  namespace: deejoft-lms
+  labels:
+    app: lms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lms
+  template:
+    metadata:
+      labels:
+        app: lms
+    spec:
+      containers:
+        - name: lms
+          image: ghcr.io/muiz468/project-lms:6a7326c485abf5ab217783349c298b65661e9e67 
+          ports:
+            - containerPort: 3000
+          env:
+            - name: SITE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: lms-config
+                  key: SITE_NAME
+            - name: MAX_UPLOAD_SIZE_MB
+              valueFrom:
+                configMapKeyRef:
+                  name: lms-config
+                  key: MAX_UPLOAD_SIZE_MB
+            - name: DB_PATH
+              value: "/app/data/lms.db"
+          volumeMounts:
+            - name: lms-storage
+              mountPath: /app/data
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+      volumes:
+        - name: lms-storage
+          persistentVolumeClaim:
+            claimName: lms-data-pvc
