@@ -3,14 +3,15 @@ const assert = require('node:assert');
 const app = require('../src/app');
 
 test('GET /health returns status ok', async () => {
-  const server = app.listen(0); // port 0 = "pick any free port automatically"
-  const { port } = server.address();
+  const server = app.listen(0);
+  try {
+    const { port } = server.address();
+    const response = await fetch(`http://localhost:${port}/health`);
+    const body = await response.json();
 
-  const response = await fetch(`http://localhost:${port}/health`);
-  const body = await response.json();
-
-  assert.strictEqual(response.status, 200);
-  assert.strictEqual(body.status, 'broken');
-
-  server.close();
+    assert.strictEqual(response.status, 200);
+    assert.strictEqual(body.status, 'broken'); // deliberate failure, kept for the red-pipeline demo
+  } finally {
+    server.close();
+  }
 });
