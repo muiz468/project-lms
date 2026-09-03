@@ -1,0 +1,6 @@
+---
+- name: Configure reverse proxy for LMS
+  hosts: lms_servers
+  become: true
+  roles:
+    - reverse_proxy
