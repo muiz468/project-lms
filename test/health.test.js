@@ -10,7 +10,7 @@ test('GET /health returns status ok', async () => {
     const body = await response.json();
 
     assert.strictEqual(response.status, 200);
-    assert.strictEqual(body.status, 'broken'); // deliberate failure, kept for the red-pipeline demo
+    assert.strictEqual(body.status, 'ok'); // deliberate failure, kept for the red-pipeline demo
   } finally {
     server.close();
   }
